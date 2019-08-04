@@ -1,0 +1,25 @@
+{
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Konstantin Kukharev",
+      "email": "konstantin.kuharev@gmail.com",
+      "homepage": "https://github.com/oll-korrect"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "twig/twig": "^2.11.3",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "": ["src/"],
+      "Application\\": ["src/application"],
+      "Contract\\": ["src/contract"],
+      "Handler\\": ["src/handler"],
+      "Traits\\": ["src/traits"]
+    },
+    "files": ["src/functions.php"]
+  }
+}

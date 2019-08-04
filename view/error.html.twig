@@ -1,0 +1,40 @@
+{% extends "template/#{layout}.html.twig" %}
+{% block script %}
+    <link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'PT Mono', monospace;
+        }
+
+        .error {
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .error h1 {
+            font-size: 5em;
+            color: #3399CC;
+            padding: 0.5em;
+        }
+
+        .error span {
+            width: 100%;
+            color: #000000;
+            padding: 0 20em;
+        }
+
+    </style>
+{% endblock %}
+{% block title %}
+ {{ error.code }} error
+{% endblock %}
+
+{% block content %}
+    <div class="error">
+        <h1>{{ error.code }} error</h1>
+        <span>{{ error.exception.getTraceAsString() }}</span>
+    </div>
+{% endblock %}

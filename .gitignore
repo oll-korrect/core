@@ -1,0 +1,8 @@
+/.idea
+/.docker/logs
+/.docker/data
+/.docker/.env
+/view/cache
+/vendor
+/composer.lock
+/public/assets

@@ -1,0 +1,84 @@
+version: '3.6'
+services:
+    nginx:
+        build: ./nginx
+        container_name: nginx
+        environment:
+            - SERVER_NAME=${SERVER_NAME}
+        volumes:
+            - ./logs/nginx:/var/log/nginx
+            - ./../:/var/www
+        ports:
+            - 80:80
+        links:
+            - php-fpm
+        networks:
+            - ok_dev
+        restart: always
+    php-fpm:
+        build: ./php-fpm
+        container_name: php-fpm
+        volumes:
+            - ./../:/var/www
+            - ./logs/php:/var/log/php
+            - ./logs/xdebug:/var/log/xdebug
+            - ./data/session:/var/lib/php/session
+        environment:
+            - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
+        ports:
+            - 9000:9000
+            - 8307:8307
+            - 8707:8707
+        links:
+            - mailtrap
+            - memcached
+            - redis
+        networks:
+            - ok_dev
+    mailtrap:
+        image: schickling/mailcatcher:latest
+        container_name: mailtrap
+        networks:
+            - ok_dev
+        ports:
+            - 1025:1025
+            - 1080:1080
+    memcached:
+        image: memcached:1.5-alpine
+        container_name: memcached
+        volumes:
+            - ./logs/memcached:/var/log/memcached
+            - ./data/memcached:/var/lib/memcached
+        ports:
+            - 11211:11211
+        networks:
+            - ok_dev
+        restart: always
+    redis:
+        container_name: redis
+        image: redis:5.0.5-alpine
+        ports:
+            - 6379:6379
+        volumes:
+            - ./data/redis:/data
+        networks:
+            - ok_dev
+        restart: always
+    redis-commander:
+        container_name: redis-commander
+        hostname: redis-commander
+        image: rediscommander/redis-commander:latest
+        restart: always
+        environment:
+            - REDIS_HOSTS=local:redis:6379
+        networks:
+            - ok_dev
+        ports:
+            - 8081:8081
+networks:
+    ok_dev:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 10.100.0.0/24

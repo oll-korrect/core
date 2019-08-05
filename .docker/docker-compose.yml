@@ -43,38 +43,6 @@ services:
         ports:
             - 1025:1025
             - 1080:1080
-    memcached:
-        image: memcached:1.5-alpine
-        container_name: memcached
-        volumes:
-            - ./logs/memcached:/var/log/memcached
-            - ./data/memcached:/var/lib/memcached
-        ports:
-            - 11211:11211
-        networks:
-            - ok_dev
-        restart: always
-    redis:
-        container_name: redis
-        image: redis:5.0.5-alpine
-        ports:
-            - 6379:6379
-        volumes:
-            - ./data/redis:/data
-        networks:
-            - ok_dev
-        restart: always
-    redis-commander:
-        container_name: redis-commander
-        hostname: redis-commander
-        image: rediscommander/redis-commander:latest
-        restart: always
-        environment:
-            - REDIS_HOSTS=local:redis:6379
-        networks:
-            - ok_dev
-        ports:
-            - 8081:8081
 networks:
     ok_dev:
         driver: bridge
